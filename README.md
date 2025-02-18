@@ -54,6 +54,34 @@
 | `15` | Receive file XMODEM and write into flash | `02h` |
 | `16` | Send file XMODEM | `3h` |
 
+## Example
+ - Read Flash '4'
+   ![image](https://github.com/user-attachments/assets/88f47708-c48a-4194-8c03-36aa8c0f4a23)
+
+- Reads data from UART and writes it to flash, remember erase flash!!! '9'
+
+  ![image](https://github.com/user-attachments/assets/c110c573-0ce3-4b9f-b37d-77a5d0c29647)
+
+  ![image](https://github.com/user-attachments/assets/fb817c43-2e45-4a90-8ebf-b05d22a5be97)
+
+-  CRC32 calc '10'
+  
+   ![image](https://github.com/user-attachments/assets/9bcf0cf3-fa83-4708-980f-3303859be8fd)
+
+
+
+  
+
+
+
+
+
+## Hardware connection 
+![a](https://github.com/user-attachments/assets/4a8a9036-b9ae-4f12-9ee3-b4c323d49c8b)
+![aas](https://github.com/user-attachments/assets/5d469e7a-bb47-4316-a73b-4eeb28fa0461)
+
+
+
 ### **Clone the Repository**  
 ```sh
 git clone https://github.com/Jampag/UART_to_SPI-NOR.git
