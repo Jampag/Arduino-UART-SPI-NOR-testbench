@@ -1,4 +1,4 @@
-# Arduino-SPI-NOR-testbench
+# Arduino-UART-SPI-NOR-testbench
 **An Arduino firmware to read, write, erase, and transfer files to SPI NOR Flash via UART.**
 
 ## Features
@@ -7,7 +7,8 @@
   -  Write and read single bytes or pages  
   -  Chip erase (full memory wipe)  
   -  Read device ID and status registers  
-  -  Configurable SPI settings  
+  -  Configurable SPI settings ([Hardware Setup](#example))  
+  -  Comaptible with x25xx Spi Nor flash
 
 - **Data Integrity & Transfers**  
   -  **CRC32 Calculation** to verify memory integrity  
