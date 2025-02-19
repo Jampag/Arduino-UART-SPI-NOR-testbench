@@ -60,6 +60,35 @@ See in a your SPI-NOR datasheet  if are compatible OPCODE with list below
 | `15` | Receive file XMODEM and write into flash | `02h` |
 | `16` | Send file XMODEM | `3h` |
 
+## Serial Communication & File Transfer Setup
+
+###  Do Not Use Arduino Serial Monitor for File Transfers  
+The **Arduino Serial Monitor** does not support **file transfers**, so it **must not be used** for sending or receiving data.  
+For file transfers, use **Tera Term** or another terminal emulator that supports the XMODEM protocol, or send  binary file
+per size 256byte.
+
+### **Tera Term Configuration for File Transfers**
+1. Open **Tera Term**.
+2. Go to **Setup > Terminal**:
+   - **Receive**: AUTO  
+   - **Transmit**: CR (Carriage Return)  
+
+3. Go to **Setup > Serial Port**:
+   - **Speed**: `115200` baud  
+   - **Data Bits**: `8`  
+   - **Parity**: `None`  
+   - **Stop Bits**: `1`  
+   - **Flow Control**: `Xon/Xoff`  
+   - **Transmit Delay**: `0ms`
+
+---
+
+#### ⚠️ **Important Notes**
+- **Ensure flow control is enabled** (`Xon/Xoff`).
+- **Do not use Arduino Serial Monitor** for file transfers.
+- **For debugging only**, the Arduino Serial Monitor can still be used to display logs a
+
+
 ## Example
 - **Read Flash ('4')**  
     1. Enter the start address (hex).  
