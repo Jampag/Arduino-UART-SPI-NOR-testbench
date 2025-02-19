@@ -85,7 +85,7 @@ per size 256byte.
 
 #### ⚠️ **Important Notes**
 - **Ensure flow control is enabled** (`Xon/Xoff`).
-- **Do not use Arduino Serial Monitor** for file transfers.
+- **Do not use Arduino Serial Monitor** for file transfers. Set `Carriage Return` and `115200`
 - **For debugging only**, the Arduino Serial Monitor can still be used to display logs a
 
 
@@ -116,7 +116,7 @@ per size 256byte.
 
        ![image](https://github.com/user-attachments/assets/b1403d5c-4ac2-4982-b977-288c62c75188)
 
-
+---
 - **CRC32 calc ('10')**
   1. Enter the starting address where you want to start cal CRC32 (hex).
   2. Enter the number of byte ugual to size file (hex) in this example 2192112byte is 2172F0
@@ -124,11 +124,23 @@ per size 256byte.
 
      ![image](https://github.com/user-attachments/assets/fdadc027-9cb6-436b-af5f-c32d21d3328f)
 
+---
+- **Receive file from XMODEM and write data into flash ('15')**
+  1. Enter the number of byte ugual to size file (hex) in this example 2192112byte is 2172F0
+  2. Enter the starting address where you want to start writing (hex).
 
+     ![image](https://github.com/user-attachments/assets/3b6a3bd6-476f-41f9-970d-d9922064dae9)
+  3. Send file with XMODEM protocol
 
+     ![image](https://github.com/user-attachments/assets/87013335-b89d-4224-9dd8-417c81944d8a)
 
-  
+  4. It will open automatically
 
+     ![image](https://github.com/user-attachments/assets/e8da633f-0eca-4dbd-a442-3e9544c8d25f)
+
+  6. At the end
+
+     ![image](https://github.com/user-attachments/assets/a40b95a4-2c23-4bc9-98b6-76bbf3eb4e6a)
 
 
 
