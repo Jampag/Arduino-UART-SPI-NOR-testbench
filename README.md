@@ -26,7 +26,8 @@
 ### Supported Boards  
 - **Arduino Minima R4**  
 - Any board level translator bi-directional
-- SPI-NOR Flash 25-series 
+- SPI-NOR Flash 25-series
+  - Tested MX25L128356([SPI-NOR Datasheet](MX25L128356.pdf))  
 
 ### **Connections**  
 | **SPI Signal** | **Arduino Minima R4 Pin** |  
