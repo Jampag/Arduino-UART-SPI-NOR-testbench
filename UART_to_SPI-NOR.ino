@@ -9,7 +9,9 @@
  *   calculation.
  *   It supports file transfer using the XMODEM protocol or send file with 
  *   Teraterm or similar.        
- * 
+ *
+ * Repository: https://github.com/Jampag/Arduino-UART-SPI-NOR-testbench
+ *
  * Features:
  *   - Read/Write to SPI NOR Flash memory
  *   - Sector/Block erase operations
