@@ -1,8 +1,8 @@
 /*
  * Project: Arduino Project to Communication and Write with SPI-NOR
  * Author:Jampag
- * Data YYYY-MM-DD: 2025-02-15 
- * Version : 0.1.0
+ * Data YYYY-MM-DD: 2025-02-19
+ * Version : 0.1.1
  * Description : 
  *   This firmware allows communication with an SPI NOR Flash memory via UART, 
  *   providing operations such as reading, writing, erasing, and CRC32 
@@ -44,6 +44,7 @@
  *          delay time(ms): <0 or 1>
  *
  * Changelog:
+ *    0.1.1 - Added print ASCII at option 4
  *    0.1.0 - Initial version with XMODEM support and basic SPI NOR Flash 
  *            functions.
  *            Tested with SPI-NOR MX25L128356 128Mbit (Mn.ID=C2 D.ID=17) 
@@ -227,6 +228,7 @@ void loop() {
             Serial.println(" *         [send size(bytes): 256 ]");
             Serial.println(" *         delay time(ms): <0 or 1>");
             Serial.println("\nExecute chip Erase or erase blocks equal to the file size!");
+            Serial.println("\nMinimun file size is 256byte!");
             Serial.println("\nReady to recive data from UART...");
             
             execStart = millis();
@@ -579,37 +581,65 @@ void printStatusRegister() {
 }
 
 // **Lettura di verifica con formattazione esadecimale**
+// **Lettura di verifica con formattazione esadecimale e ASCII**
 void readFlash(uint32_t addr, uint32_t numByte) {
     const int bytesPerRow = 16; // Stampa massimo 16 byte per riga
     uint32_t bytesToRead = numByte;
+    char asciiBuffer[bytesPerRow + 1]; // Buffer per i caratteri ASCII
+    asciiBuffer[bytesPerRow] = '\0'; // Null terminator per la stringa
 
     Serial.println(" Reading SNOR:");
 
     digitalWrite(CS_FLASH, LOW);
-    SPI.transfer(0x03); // Comando Read Data
+    SPI.transfer(0x03); // Opcode Read Data
 
     SPI.transfer((addr >> 16) & 0xFF);
     SPI.transfer((addr >> 8) & 0xFF);
     SPI.transfer(addr & 0xFF);
 
     for (uint32_t i = 0; i < bytesToRead; i++) {
-        if (i % bytesPerRow == 0) {
+        if (i % bytesPerRow == 0) { 
+            // Stampa il buffer ASCII della riga precedente
+            if (i != 0) {
+                Serial.print("  |");
+                Serial.print(asciiBuffer);
+                Serial.print("|");
+            }
+            // Inizia una nuova riga
             Serial.print("\n0x");
             Serial.print(addr + i, HEX);
             Serial.print(": ");
         }
 
         byte data = SPI.transfer(0x00);
-       
-
+        
+        // Stampa esadecimale con zero padding se minore di 16
         Serial.print(data < 16 ? "0" : "");
         Serial.print(data, HEX);
         Serial.print(" ");
+
+        // Conversione in ASCII o sostituzione con un punto se non stampabile
+        asciiBuffer[i % bytesPerRow] = (data >= 32 && data <= 126) ? (char)data : '.';
     }
 
     digitalWrite(CS_FLASH, HIGH);
+
+    // Stampa l'ultima riga del buffer ASCII
+    uint32_t remainingBytes = bytesToRead % bytesPerRow;
+    if (remainingBytes > 0) {
+        // Aggiunge spazi per allineare l'output ASCII
+        for (uint32_t j = remainingBytes; j < bytesPerRow; j++) {
+            Serial.print("   "); // Spazio per ogni byte mancante
+        }
+    }
+    
+    Serial.print("  |");
+    Serial.print(asciiBuffer);
+    Serial.print("|");
+
     Serial.println("\n Read complete!");
 }
+
 
 // Legge il Device ID della memoria [Opcode 0x90]
 void readREMS() {
@@ -1098,5 +1128,38 @@ strtoul(..., NULL, 16): La funzione strtoul converte la stringa in un numero int
 | 4-131| Dati (128 byte)        | Dati trasmessi nel pacchetto                     |
 | 132  | Checksum (1 byte)      | Somma modulo 256 dei 128 byte dati               |
 +------+------------------------+--------------------------------------------------+
+
+//OLD readFlash senza ASCII print
+void readFlash(uint32_t addr, uint32_t numByte) {
+    const int bytesPerRow = 16; // Stampa massimo 16 byte per riga
+    uint32_t bytesToRead = numByte;
+
+    Serial.println(" Reading SNOR:");
+
+    digitalWrite(CS_FLASH, LOW);
+    SPI.transfer(0x03); // Comando Read Data
+
+    SPI.transfer((addr >> 16) & 0xFF);
+    SPI.transfer((addr >> 8) & 0xFF);
+    SPI.transfer(addr & 0xFF);
+
+    for (uint32_t i = 0; i < bytesToRead; i++) {
+        if (i % bytesPerRow == 0) {
+            Serial.print("\n0x");
+            Serial.print(addr + i, HEX);
+            Serial.print(": ");
+        }
+
+        byte data = SPI.transfer(0x00);
+       
+
+        Serial.print(data < 16 ? "0" : "");
+        Serial.print(data, HEX);
+        Serial.print(" ");
+    }
+
+    digitalWrite(CS_FLASH, HIGH);
+    Serial.println("\n Read complete!");
+}
 
 */
