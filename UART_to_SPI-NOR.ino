@@ -1,6 +1,6 @@
 /*
  * Project: Arduino Project to Communication and Write with SPI-NOR
- * Author:Jampag
+ * Author:Jampag [https://github.com/Jampag/UART_to_SPI-NOR.git]
  * Data YYYY-MM-DD: 2025-02-19
  * Version : 0.1.1
  * Description : 
@@ -22,7 +22,7 @@
  *
  * Hardware Requirements:
  *   - Arduino Minima R4 microcontroller
- *     MISO(CIPO)=D11; MOSI(COPI)=D12; SCK=D13
+ *     MISO(CIPO)=D12; MOSI(COPI)=D11; SCK=D13
  *   - Compatible SPI NOR Flash memory x25 family
  *   - Level translator bidirectional 3V3<->5V
  *   
@@ -97,7 +97,7 @@ uint8_t spiMode = SPI_MODE0;
 void setup() {
     Serial.begin(115200);
     delay(2000);   
-    //Arduino R4 MISO(CIPO)=D11; MOSI(COPI)=D12; SCK=D13
+    //Arduino R4 MISO(CIPO)=D12; MOSI(COPI)=D11; SCK=D13
     init_default_SPI();
     showMenu();
 }
