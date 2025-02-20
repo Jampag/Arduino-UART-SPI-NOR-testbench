@@ -32,8 +32,8 @@
 ### **Connections**  
 | **SPI Signal** | **Arduino Minima R4 Pin** |  
 |--------------|--------------|  
-| **MISO (CIPO)** | **D11** |  
-| **MOSI (COPI)** | **D12** |  
+| **MISO (CIPO)** | **D12** |  
+| **MOSI (COPI)** | **D11** |  
 | **SCK** | **D13** |  
 | **CS (Chip Select)** | **D10** |  
 | **RST (Optional Reset)** | **D9** |  
