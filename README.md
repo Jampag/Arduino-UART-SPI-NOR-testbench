@@ -94,7 +94,7 @@ per size 256byte.
     1. Enter the start address (hex).  
     2. Enter the number of bytes to read (hex).  
     3. Data is displayed in hexadecimal format.  
-        - The output format is `0xADDR: DATA DATA DATA`  
+        - The output format is `0xADDR: DATA DATA DATA | ASCII |`  
         - Each row contains 16 bytes. The right image is Notepad++ Hex view 
    ![image](https://github.com/user-attachments/assets/88f47708-c48a-4194-8c03-36aa8c0f4a23)
 
