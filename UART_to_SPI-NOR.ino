@@ -1,8 +1,8 @@
 /*
  * Project: Arduino Project to Communication and Write with SPI-NOR
  * Author:Jampag [https://github.com/Jampag/UART_to_SPI-NOR.git]
- * Data YYYY-MM-DD: 2025-02-19
- * Version : 0.1.1
+ * Data YYYY-MM-DD: 2025-02-25
+ * Version : 0.1.2
  * Description : 
  *   This firmware allows communication with an SPI NOR Flash memory via UART, 
  *   providing operations such as reading, writing, erasing, and CRC32 
@@ -13,12 +13,16 @@
  * Repository: https://github.com/Jampag/Arduino-UART-SPI-NOR-testbench
  *
  * Features:
+ *   - Only support 1x SPI
  *   - Read/Write to SPI NOR Flash memory
  *   - Sector/Block erase operations
  *   - CRC32 calculation over a memory range
- *   - File transfer using XMODEM
+ *   - File transfer using XMODEM or UART
  *   - Configurable SPI settings
  *   - Dump Flash memory to UART
+ *   - Compatible with 25-series SPI NOR Flash
+ *     Max Flash size is 16777216bits/2,09715MByte
+ *     (The addresses are 24 bits equal to 16777216 bits)
  *
  * Hardware Requirements:
  *   - Arduino Minima R4 microcontroller
@@ -46,6 +50,7 @@
  *          delay time(ms): <0 or 1>
  *
  * Changelog:
+ *    0.1.2 - Added CRC32 compute on data from UART, at option '9'
  *    0.1.1 - Added print ASCII at option 4
  *    0.1.0 - Initial version with XMODEM support and basic SPI NOR Flash 
  *            functions.
@@ -80,6 +85,7 @@ unsigned long totalBlocksWritten = 0;
 uint32_t addr;
 uint32_t numByte;
 int blockSize, numBlocks;
+uint32_t crc = ~0L; // CRC32
 //SPI
 uint32_t clkSPI = 2000000;
 BitOrder bitOrder = MSBFIRST;
@@ -209,6 +215,7 @@ void loop() {
             break;        
 
         case 9:
+            crc = ~0L;
             Serial.print("Enter start address (hex): ");
             flashAddress = strtoul(readSerialCommand().c_str(), NULL, 16); //
             inWriteLoop = true;
@@ -382,6 +389,16 @@ void UART_to_SNOR(){
             totalBytesWritten += BUFFER_SIZE;
             totalBlocksWritten++;
 
+          // Calcola CRC32 per i dati nel buffer
+          for (int i = 0; i < BUFFER_SIZE; i++) {
+            uint8_t data = buffer[i];
+            // Aggiornamento CRC con il nuovo byte letto
+            crc ^= data;
+            for (uint8_t j = 0; j < 8; j++) {
+              crc = (crc >> 1) ^ (0xEDB88320 & -(crc & 1));
+            }
+          }
+
             Serial.print("Write ");
             Serial.print(BUFFER_SIZE);
             Serial.print(" bytes - Block #");
@@ -409,6 +426,17 @@ void UART_to_SNOR(){
             writePage(flashAddress, buffer, bufferIndex);  // Scrivi l'ultimo buffer
             waitForWriteCompletion();  // Attendi la fine della scrittura
 
+            // Calcola CRC32 per i dati nel buffer
+            for (int i = 0; i < bufferIndex; i++) {
+              uint8_t data = buffer[i];
+              // Aggiornamento CRC con il nuovo byte letto
+              crc ^= data;
+              for (uint8_t j = 0; j < 8; j++) {
+                crc = (crc >> 1) ^ (0xEDB88320 & -(crc & 1));
+              }
+            }    
+
+
             totalBytesWritten += bufferIndex;
             totalBlocksWritten++;
 
@@ -422,6 +450,8 @@ void UART_to_SNOR(){
             Serial.println(totalBlocksWritten);
             Serial.print("Total bytes written: ");
             Serial.println(totalBytesWritten);
+            Serial.print("CRC32: ");
+            Serial.println(~crc, HEX);   		            
 
             receiving = false;  // Fine della ricezione dei dati
             inWriteLoop = false;  // Esci dal ciclo di scrittura
@@ -691,7 +721,7 @@ void hardwareRST() {
 
 unsigned long calcCRC32(uint32_t startAddr, uint32_t numBytes) {
     
-    uint32_t crc = ~0L;  // Inizializza CRC32 con tutti i bit a 1
+    crc = ~0L;  // Inizializza CRC32 con tutti i bit a 1
     uint8_t data;
 
     Serial.println("Opcode 03h");
