@@ -113,8 +113,10 @@ per size 256byte.
        ![image](https://github.com/user-attachments/assets/06130826-bd19-4df3-8ba9-95b17a83e5de)
 
     4. At the end the file size must match the size indicated.
+       Compare CRC32 with your file on your pc using 7zip(or similar)
 
-       ![image](https://github.com/user-attachments/assets/b1403d5c-4ac2-4982-b977-288c62c75188)
+       ![image](https://github.com/user-attachments/assets/538184fd-9fb9-43dc-84b2-91f56267b7ad)
+
 
 ---
 - **CRC32 calc ('10')**
