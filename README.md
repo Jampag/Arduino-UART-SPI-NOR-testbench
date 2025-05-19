@@ -1,6 +1,10 @@
 # Arduino-UART-SPI-NOR-testbench
 **An Arduino firmware to read, write, erase, and transfer files to SPI NOR Flash via UART.**
 
+
+https://github.com/user-attachments/assets/d742eaf6-cefc-46c3-817a-70fd38592880
+
+
 ## Features
 - **SPI NOR Flash Memory Control**  
   -  Only support 1x SPI
